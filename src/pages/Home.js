@@ -26,6 +26,7 @@ export default function Home() {
     if (!isLoaded) {
       loadData()
     }
+    // eslint-disable-next-line  react-hooks/exhaustive-deps
   }, [])
 
   return (

@@ -29,12 +29,14 @@ export default function Home({ match }) {
     if (isLoaded) {
       setProject(projects[match.params.id])
     }
+    // eslint-disable-next-line  react-hooks/exhaustive-deps
   }, [projects, categories])
 
   useEffect(() => {
     if (!isLoaded) {
       loadData()
     }
+    // eslint-disable-next-line  react-hooks/exhaustive-deps
   }, [])
 
   if (!project || !project.image) {
@@ -53,7 +55,11 @@ export default function Home({ match }) {
             <H2>{project.title}</H2>
             <P>{project.project_text}</P>
             <div className="pt-2 pb-2">
-              <img src={projectImage} className="img-fluid" />
+              <img
+                src={projectImage}
+                alt={project.title}
+                className="img-fluid"
+              />
             </div>
             <Link to="/" className="text-uppercase small text-muted">
               Back to previous
