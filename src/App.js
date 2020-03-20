@@ -1,26 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense, lazy } from 'react'
+
+import { ThemeProvider } from 'styled-components'
+
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+
+import theme from './theme'
+import { DataProvider } from './DataProvider'
+
+const Home = lazy(() => import('./pages/Home'))
+const Single = lazy(() => import('./pages/Single'))
+const NotFound = lazy(() => import('./pages/NotFound'))
+
+const Loader = () => <span>loading...</span>
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <DataProvider>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <Switch>
+              <Route
+                path="/"
+                component={props => (
+                  <Suspense fallback={<Loader />}>
+                    <Home {...props} />
+                  </Suspense>
+                )}
+                exact
+              />
+              <Route
+                path="/:id"
+                component={props => (
+                  <Suspense fallback={<Loader />}>
+                    <Single {...props} />
+                  </Suspense>
+                )}
+                exact
+              />
+              <Route
+                path="*"
+                component={props => (
+                  <Suspense fallback={<Loader />}>
+                    <NotFound {...props} />
+                  </Suspense>
+                )}
+              />
+            </Switch>
+          </Router>
+        </ThemeProvider>
+      </DataProvider>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
